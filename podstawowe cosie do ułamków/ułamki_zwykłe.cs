@@ -152,7 +152,7 @@ namespace podstawowe_cosie_do_ułamków
 			return (a / b).licznik % (a / b).mianownik;
 		}
 
-		public static bool operator !=(ulamekzwykly a, ulamekzwykly b)
+		public static ułamek_zwykły operator ++(ułamek_zwykły a)
 		{
 			unormuj(ref a, ref b);
 			return a.licznik != b.licznik;
