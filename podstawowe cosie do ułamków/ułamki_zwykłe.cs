@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-//using Ulamek32 = podstawowe_cosie_do_ułamków.ulamekzwykly<int, uint>;
+//using Ulamek32 = podstawowe_cosie_do_ułamków.ułamek_zwykły<int, uint>;
 
 namespace podstawowe_cosie_do_ułamków
 {
@@ -14,36 +14,36 @@ namespace podstawowe_cosie_do_ułamków
 	using System.Numerics;
 	using System.Runtime.CompilerServices;
 
-	internal struct ulamekzwykly/*<TLicznik, TMianownik>
+	internal struct ułamek_zwykły/*<TLicznik, TMianownik>
 		where TLicznik : INumber<TLicznik> where TMianownik : INumber<TMianownik> */ //: RoboczeMatematyczne
 	{
 		public int licznik = 0;
 		public int mianownik = 1;
 
-		//public ulamekzwykly(int mianownik) : this()
+		//public ułamek_zwykły(int mianownik) : this()
 		//{
 		//    mianownik = 1;
 		//    this.mianownik = mianownik;
 		//    //this.mianownik = 1;
 		//}
 
-		public ulamekzwykly()
+		public ułamek_zwykły()
 		{
 			licznik = 0;
 			mianownik = 1;
 		}
 
-		//public static ulamekzwykly skruc(ulamekzwykly a)
+		//public static ułamek_zwykły skruc(ułamek_zwykły a)
 		//{
 		//    int nwd = RoboczeMatematyczne.NWD(a.licznik, a.mianownik);
 		//}
 
-		//public static string convert(ulamekzwykly a)
+		//public static string convert(ułamek_zwykły a)
 		//{
 		//    return String.
 		//}
 
-		private static void unormuj(ref ulamekzwykly a, ref ulamekzwykly b, int mnoznik = 1)
+		private static void unormuj(ref ułamek_zwykły a, ref ułamek_zwykły b, int mnoznik = 1)
 		{
 			if (b.mianownik != a.mianownik)
 			{
@@ -58,7 +58,7 @@ namespace podstawowe_cosie_do_ułamków
 			b.mianownik = a.mianownik;
 		}
 
-		private static void unormuj(ref ulamekzwykly a, ref ulamekzwykly b, ref ulamekzwykly c, int mnoznik = 1)
+		private static void unormuj(ref ułamek_zwykły a, ref ułamek_zwykły b, ref ułamek_zwykły c, int mnoznik = 1)
 		{
 			if (a.mianownik != b.mianownik || b.mianownik != c.mianownik) {
 				a.licznik *= b.mianownik * c.mianownik;
@@ -76,39 +76,51 @@ namespace podstawowe_cosie_do_ułamków
 			c.mianownik = a.mianownik;
 		}
 
-		public static int przybliz(ulamekzwykly a)
+		public static int przybliz(ułamek_zwykły a)
 		{
 			return a.licznik / a.mianownik;
 		}
 
-		public static string ulamek_zwykly_do_tektu(ulamekzwykly a)
+		public static string do_tektu(ułamek_zwykły a)
 		{
 			return $"{a.licznik}/{a.mianownik}";
 		}
 
-		public static ulamekzwykly operator +(ulamekzwykly a, ulamekzwykly b)
+		public static ułamek_zwykły operator +(ułamek_zwykły a, ułamek_zwykły b)
 		{
-			ulamekzwykly suma;
+			ułamek_zwykły suma;
 			unormuj(ref a, ref b);
 			suma.licznik = a.licznik + b.licznik;
 			suma.mianownik = a.mianownik;
 			return suma;
 		}
 
-		//public static ulamekzwykly operator + <TLiczba>(ulamekzwykly a)
-
-		public static ulamekzwykly operator -(ulamekzwykly a, ulamekzwykly b)
+		public static ułamek_zwykły operator + (ułamek_zwykły a, int b)
 		{
-			ulamekzwykly suma;
+			ułamek_zwykły suma;
+			suma.licznik = a.licznik + b * a.mianownik;
+			suma.mianownik = a.mianownik;
+			return suma;
+		}
+
+		public static ułamek_zwykły operator -(ułamek_zwykły a, ułamek_zwykły b)
+		{
+			ułamek_zwykły suma;
 			unormuj(ref a, ref b);
 			suma.licznik = a.licznik - b.licznik;
 			suma.mianownik = a.mianownik;
 			return suma;
 		}
 
-		public static ulamekzwykly operator *(ulamekzwykly a, ulamekzwykly b)
+		public static ułamek_zwykły operator -(ułamek_zwykły a, int b)
 		{
-			ulamekzwykly iloczyn;
+			a.licznik -= b * a.mianownik;
+			return a;
+		}
+
+		public static ułamek_zwykły operator *(ułamek_zwykły a, ułamek_zwykły b)
+		{
+			ułamek_zwykły iloczyn;
 			
 			if (RoboczeMatematyczne.absolut(a.licznik) == RoboczeMatematyczne.absolut(b.mianownik))
 			{
@@ -127,7 +139,7 @@ namespace podstawowe_cosie_do_ułamków
 			return iloczyn;
 		}
 
-		public static ulamekzwykly operator /(ulamekzwykly a, ulamekzwykly b)
+		public static ułamek_zwykły operator /(ułamek_zwykły a, ułamek_zwykły b)
 		{
 			if (RoboczeMatematyczne.absolut(a.licznik) == RoboczeMatematyczne.absolut(b.licznik))
 			{
@@ -141,54 +153,66 @@ namespace podstawowe_cosie_do_ułamków
 				b.mianownik = 1;
 			}
 
-			ulamekzwykly iloraz;
+			ułamek_zwykły iloraz;
 			iloraz.licznik = a.licznik * b.mianownik;
 			iloraz.mianownik = a.mianownik * b.licznik;
 			return iloraz;
 		}
 
-		public static int operator %(ulamekzwykly a, ulamekzwykly b)
+		public static int operator %(ułamek_zwykły a, ułamek_zwykły b)
 		{
 			return (a / b).licznik % (a / b).mianownik;
 		}
 
 		public static ułamek_zwykły operator ++(ułamek_zwykły a)
 		{
+			a += 1;
+			return a;
+		}
+
+		public static ułamek_zwykły operator --(ułamek_zwykły a)
+		{
+			a -= 1;
+			return a;
+		}
+
+		public static bool operator !=(ułamek_zwykły a, ułamek_zwykły b)
+		{
 			unormuj(ref a, ref b);
 			return a.licznik != b.licznik;
 		}
 
-		public static bool operator ==(ulamekzwykly a, ulamekzwykly b)
+		public static bool operator ==(ułamek_zwykły a, ułamek_zwykły b)
 		{
 			unormuj(ref a, ref b);
 			return a.licznik == b.licznik;
 		}
 
-	   public static bool operator <(ulamekzwykly a, ulamekzwykly b)
+	   public static bool operator <(ułamek_zwykły a, ułamek_zwykły b)
 		{
 			unormuj(ref a, ref b);
 			return a.licznik < b.licznik;
 		}
 
-		public static bool operator <=(ulamekzwykly a, ulamekzwykly b)
+		public static bool operator <=(ułamek_zwykły a, ułamek_zwykły b)
 		{
 			unormuj(ref a, ref b);
 			return a.licznik <= b.licznik;
 		}
 
-		public static bool operator >(ulamekzwykly a, ulamekzwykly b)
+		public static bool operator >(ułamek_zwykły a, ułamek_zwykły b)
 		{
 			unormuj(ref a, ref b);
 			return a.licznik > b.licznik;
 		}
 
-		public static bool operator >= (ulamekzwykly a, ulamekzwykly b)
+		public static bool operator >= (ułamek_zwykły a, ułamek_zwykły b)
 		{
 			unormuj(ref a, ref b);
 			return a.licznik >= b.licznik;
 		}
 
-		public static bool equals(ulamekzwykly a, ulamekzwykly b)
+		public static bool equals(ułamek_zwykły a, ułamek_zwykły b)
 		{
 			return a.licznik == b.licznik && a.mianownik == b.mianownik;
 		}
@@ -202,7 +226,7 @@ namespace podstawowe_cosie_do_ułamków
 		}
 	}
 
-	//interface ulamekzwykly
+	//interface ułamek_zwykły
 	//{
 	//    public
 	//}

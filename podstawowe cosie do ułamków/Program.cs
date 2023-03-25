@@ -10,8 +10,8 @@ namespace podstawowe_cosie_do_ułamków
 		static void Main()
 		{
 			Console.WriteLine(int.MaxValue);
-			//ulamekzwykly a = { 0, 1 };
-			ulamekzwykly a;
+			//ułamek_zwykły a = { 0, 1 };
+			ułamek_zwykły a;
 			a.mianownik = 1;
 			a.licznik = 2;
 			//a = { 0, 1};
